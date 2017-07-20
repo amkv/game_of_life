@@ -3,27 +3,27 @@
 import sys
 import os
 
-class Boards:
+class Parser:
     def __init__(self, fileName, debugMode=False):
-        self.__debugMode = debugMode
-        self.file = self.__checkFileName(fileName)
+        self._DebugMode = debugMode
+        self.File = self._check_file_name(fileName)
 
-    def __debug(self, text):
-        if self.__debugMode:
+    def _debug(self, text):
+        if self._DebugMode:
             print text
 
-    def readFile():
-        pass
-
-    def __checkFileName(self, fileName):
+    def _check_file_name(self, fileName):
         if len(fileName) < 1:
             usage()
         try:
-            file = open(fileName, 'r')
+            myFile = open(fileName, 'r')
         except IOError:
-            self.__debug('can\'t open file: ' + str(fileName))
+            self._debug('can\'t open file: ' + str(fileName))
             sys.exit(0)
-        return file
+        return myFile
+
+    def read_file(self):
+        pass
 
 def usage():
     print "usage:\n\t python script.py <filename>\n"
@@ -32,7 +32,9 @@ def usage():
 def main(argv):
     if len(argv) != 2:
         usage()
-    boards = Boards(argv[1], debugMode=True)
+    MyParser = Parser(argv[1], debugMode=True)
+    MyParser.read_file()
+
 
 if __name__ == '__main__':
     os.system('clear')
