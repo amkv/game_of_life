@@ -28,7 +28,7 @@ class Board:
             if i == 20:
                 new_board += '\n'
                 i = 0
-            if each == '0':
+            if each == '0' or each == '0\n':
                 new_board += ' .'
             else:
                 new_board += ' #'
@@ -67,19 +67,27 @@ class Parser:
             print text
 
     def _check_file_name(self, file_name):
-        if len(file_name) < 1:
+        if len(file_name) < 5:
+            usage()
+        if file_name[-4:] != '.csv':
             usage()
         try:
             my_file = open(file_name, 'r')
         except IOError:
             self._debug('can\'t open file: ' + str(file_name))
             sys.exit(0)
-        next(my_file)       # skipping the first line with column names
+        try:
+            next(my_file)       # skipping the first line with column names
+        except StopIteration:
+            usage()
         return my_file
 
     def _create_boards(self, line):
         info = line.split(',')
-        return Board(info[0], info[1], info[2:402], info[402:802])
+        try:
+            return Board(info[0], info[1], info[2:402], info[402:802])
+        except IndexError:
+            usage()
 
     def _read_file(self):
         for line in self._my_file:
@@ -110,7 +118,7 @@ def main(argv):
         usage()
     my_parser = Parser(argv[1], debug_mode=True)
 
-    my_parser.next_board()
+    board = my_parser.next_board()
     board = my_parser.next_board()
     print board
     game = Game(board)
@@ -120,7 +128,8 @@ def main(argv):
     # while 42:
     #     try:
     #         # print my_parser.next_board()
-    #         my_parser.next_board()
+    #         board = my_parser.next_board()
+    #         del board
     #         i += 1
     #     except StopIteration:
     #         break
