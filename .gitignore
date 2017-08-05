@@ -1,3 +1,6 @@
 .idea/
 temp/resources/
 train.csv
+s.csv
+my_test.py
+*.pyc
